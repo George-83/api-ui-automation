@@ -1,16 +1,16 @@
 package org.example;
 
 import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.testng.Assert;
 import org.testng.annotations.Test;
+import java.util.ArrayList;
 import java.util.List;
 import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
-import static io.restassured.path.json.JsonPath.with;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import java.util.Collections;
 import static testData.Variables.*;
 
 @Slf4j
@@ -32,12 +32,14 @@ public class GetPeopleInfoTest {
         log.info("Performing GET request with URL: " + URL);
         ValidatableResponse valResponse = given().when().get(URL).then()
                 .assertThat()
-                .statusCode(200);
-//                .body("products.mainCharacteristics[2].name[0]", equalTo("Диагональ"));
-//        valResponse.log().body();
+                .statusCode(200)
+                .body("products.mainCharacteristics[2].name[0]", equalTo("Диагональ"));
         JsonPath responseAsObjects = valResponse.extract().jsonPath();
-        List<Double> prices = responseAsObjects.getList("products.price");
-        System.out.println(prices);
+        List<Integer> pricesActualSorting = responseAsObjects.getList("products.price");
+        List<Integer> pricesExpectedSorting = new ArrayList<>(pricesActualSorting);
+        Collections.sort(pricesExpectedSorting);
+        System.out.println(pricesActualSorting);
+        System.out.println(pricesExpectedSorting);
+        Assert.assertEquals(pricesActualSorting, pricesExpectedSorting);
     }
 }
-
