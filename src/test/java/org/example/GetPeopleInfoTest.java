@@ -42,4 +42,11 @@ public class GetPeopleInfoTest {
         System.out.println(pricesExpectedSorting);
         Assert.assertEquals(pricesActualSorting, pricesExpectedSorting);
     }
+
+    @Test
+    public void arrayOperations(){
+        int[] array = {15, 46, 8 ,2};
+        for (int i: array)
+        Assert.assertTrue(array[0] > array[3]);
+    }
 }
