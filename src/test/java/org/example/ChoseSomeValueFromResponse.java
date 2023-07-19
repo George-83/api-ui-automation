@@ -22,6 +22,7 @@ public class ChoseSomeValueFromResponse {
         ValidatableResponse responseFilm = given().when().get(film).then().assertThat()
                 .statusCode(200);
         responseFilm.log().body();
+        System.out.println(responseBody);
 
     }
 }
