@@ -13,4 +13,5 @@ public class Variables {
             "sortType", "price_asc",
             "limit", "19"
     );
+    public static String URL = "https://kcentr.ru/content-service/api/desktop/v1/products";
 }

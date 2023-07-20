@@ -26,7 +26,6 @@ public class GetPeopleInfoTest {
 
     @Test
     public void CheckSortingByPriceAsc () {
-        String URL = "https://kcentr.ru/content-service/api/desktop/v1/products";
         log.info("Performing GET request with URL: " + URL);
         ValidatableResponse valResponse = given()
                 .queryParams(queryParameters)
