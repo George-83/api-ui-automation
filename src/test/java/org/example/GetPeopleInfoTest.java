@@ -3,13 +3,17 @@ package org.example;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ValidatableResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.web.client.RestTemplate;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.*;
 import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.*;
 import static testData.Variables.*;
+import org.springframework.http.*;
 
 @Slf4j
 public class GetPeopleInfoTest {
@@ -41,7 +45,31 @@ public class GetPeopleInfoTest {
         System.out.println(pricesExpectedSorting);
         System.out.println(queryParameters);
         Assert.assertEquals(pricesActualSorting, pricesExpectedSorting);
+}
+
+    @Test
+    public void CheckSortingByPriceAscWithSpring () {
+        RestTemplate restTemplate = new RestTemplateBuilder()
+                .build();
+        HttpMethod httpMethod = HttpMethod.GET;
+        String url = "https://kcentr.ru/content-service/api/desktop/v1/products?visitorUuid=8485f7ea-f2e7-4478-aff3-e8fe3b0f3cf0&cityUuid=deb1d05a-71ce-40d1-b726-6ba85d70d58f&categoryId=televizory&sortType=price_asc&limit=19";
+        HttpEntity entity = null;
+
+        log.info("Performing {} request with URL: {},\n"
+                + "request entity: {}", httpMethod, url);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                url,
+                httpMethod,
+                entity,
+                String.class);
+
+        log.info("Getting response with Status Code = {},\n" +
+                "Response Body: {}", response.getStatusCode(), response.getBody());
+        assertThat(response.getStatusCode())
+                .isEqualTo(HttpStatus.OK);
     }
+
 
     @Test
     public void checkFilterByBrand() {
